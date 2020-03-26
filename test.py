@@ -1,4 +1,3 @@
-```python
 # -*- coding:utf-8 -*-
 from pprint import pprint
 
@@ -59,7 +58,7 @@ test2 = Prices(symbol="hag")
 print(
     test2.get_historical_prices(
         frequency="monthly"
-        , save=False))
+        , save=True))
 
 ''' =====>
                            Open  Close   High   Low     Volumn
@@ -100,4 +99,3 @@ Date
 #         start='2019-01-02 09:15:00+07:00'
 #         , end='2019-01-12 18:00:00+07:00'
 #         , frequency="daily" ))
-```
