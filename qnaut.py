@@ -225,7 +225,6 @@ class Prices():
             # luu csv
             if save is True:
                 save_to_csv(
-                    df, self.company.get_symbol()
-                    , frequency=frequency )
+                    df, self.company.get_symbol(), frequency=frequency )
             return df
 
