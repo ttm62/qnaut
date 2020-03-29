@@ -9,8 +9,8 @@ import os
 import sys
 import time
 import click
-from qnaut import *
 from datetime import datetime
+from qnaut import Prices, Stock
 
 class bcolors:
     HEADER = '\033[95m'
@@ -22,7 +22,7 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-def break_high_low(symbol, frequency):
+def break_high_low(symbol, frequency, force_update=False):
     def break_high(high_col):
         result = []
         length = len(high_col)
@@ -79,6 +79,7 @@ def break_high_low(symbol, frequency):
 
     df = Prices(
         symbol=symbol
+        , force_update=force_update
         ).get_historical_prices(
             frequency=frequency
             , save=True )
@@ -99,10 +100,9 @@ def stat_in_percent(col):
         100*sum(col)/len(col))
 
 def terminal_stat(df):
-    df = df.reset_index()
-    from pprint import pprint
-
     stat    = {}
+    df      = df.reset_index()
+
     stat['break_high'] = {
         'count'     : sum(df['break_high']) 
         , 'percent' : stat_in_percent(df['break_high'])
@@ -152,19 +152,17 @@ def terminal_stat(df):
     line_stat("No   break", bcolors.WARNING, stat['no_break']  )
     print()
 
-
-
 @click.command()
-@click.option('--symbol', prompt='Symbol? :'   , help='Mã CK bạn muốn kiểm tra')
-@click.option('--freq'  , prompt='frequency?: ', help='Khung thời gian (1min, 5min, 10min, ... daily, monthly, weekly)')
-@click.option('--period', default=120          , help='Thời gian tự động làm mới kết quả (s)')
+@click.option('--symbol', prompt='Symbol? '   , help='Mã CK bạn muốn kiểm tra')
+@click.option('--freq'  , prompt='frequency? ', help='Khung thời gian (1min, 5min, 10min, ... daily, monthly, weekly)')
+@click.option('--period', default=120         , help='Thời gian tự động làm mới kết quả (s)')
 
 def main(symbol, freq, period):
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
 
         print("="*40)
-        print(f"= ({Stock(symbol).get_symbol()}-{freq}) Xác suất phá vỡ High&Low")
+        print(f"= ({Stock(symbol).get_symbol()}-{freq}) Xac suat pha vo High\Low")
         print("="*40)
         df = break_high_low(
             symbol=symbol, frequency=freq)

@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-__all__ = ['Stock','Prices']   # ngăn chặn wild import
+__all__ = ['Stock','Prices','create_directory']   # ngăn chặn wild import
 
 import os
 import json
@@ -8,6 +8,8 @@ import requests as rq
 import pandas as pd
 
 from logger import log
+
+DEFAULT_TIMEDELTA = 7
 
 #####################
 #       HELPER
@@ -33,12 +35,28 @@ def write_json(data, folder, fileName):
         log("warning", f"Loi ghi file {filePathNameWithExt} tu write_json()")
 
 
-def update_data(last_update):
+def update_data(last_update, force):
     ''' Cập nhật dữ liệu và lưu cục bộ
         (tự động cập nhật nếu last_update là 3 ngày trước)
     '''
     this_moment = datetime.datetime.now()
-    if this_moment-last_update >= datetime.timedelta(days=3):
+    if this_moment-last_update >= datetime.timedelta(days=DEFAULT_TIMEDELTA):
+        try:
+            # tat ca cac ma CP dang niem yet
+            data = rq.get("https://finfo-api.vndirect.com.vn/stocks").json()
+            write_json(data, 'info', 'vn_by_symbol')
+
+            # data phan chia theo nganh
+            data = rq.get(
+                "https://finfo-api.vndirect.com.vn/industries"
+            ).json()
+            write_json(data, "info", "vn_by_industries")
+
+            log("info", "Da cap nhat du lieu thi truong Viet Nam")
+        except:
+            log("warning", "Loi cap nhat du lieu tu update_data()")
+
+    if force == True:
         try:
             # tat ca cac ma CP dang niem yet
             data = rq.get("https://finfo-api.vndirect.com.vn/stocks").json()
@@ -100,9 +118,9 @@ def save_to_csv(df, symbol, frequency):
 #####################
 
 class Stock():
-    last_update = datetime.datetime.now() - datetime.timedelta(days=4)
+    last_update = datetime.datetime.now()
 
-    def __init__(self, symbol):
+    def __init__(self, symbol, force_update=False):
         # kiem tra duong dan co ban
         create_directory("./info")
         create_directory("./events")
@@ -112,15 +130,16 @@ class Stock():
         self.symbol       = symbol.upper()
         self.company_info = None
         self.events       = None
+        self.force_update = force_update
 
         # cap nhat data
-        Stock.last_update = update_data(Stock.last_update)
+        Stock.last_update = update_data(Stock.last_update, self.force_update)
 
     def is_exists(self):
         # kiem tra du lieu da co san hay chua? -> cap nhat
         if (not os.path.exists("./info/vn_by_symbol.json") and
             not os.path.exists("./info/vn_by_industries.json")):
-            Stock.last_update = update_data(Stock.last_update)
+            Stock.last_update = update_data(Stock.last_update, self.force_update)
 
         # tim du lieu tuong ung voi symbol va cap nhat events
         with open("./info/vn_by_symbol.json") as f:
@@ -158,8 +177,8 @@ class Stock():
 
 
 class Prices():
-    def __init__(self, symbol):
-        self.company            = Stock(symbol=symbol)
+    def __init__(self, symbol, force_update=False):
+        self.company            = Stock(symbol=symbol, force_update=force_update)
         self.historical_prices  = None
     
     def get_company(self):
