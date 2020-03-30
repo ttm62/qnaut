@@ -1,5 +1,7 @@
+### Cai dat cac phu thuoc
 $ pip install pandas numpy seaborn matplotlib click 
 
+### Su dung
 ```python
 # -*- coding:utf-8 -*-
 from pprint import pprint
