@@ -1,4 +1,5 @@
-pip install pandas numpy seaborn matplotlib click 
+$ pip install pandas numpy seaborn matplotlib click 
+
 ```python
 # -*- coding:utf-8 -*-
 from pprint import pprint
