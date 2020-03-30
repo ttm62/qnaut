@@ -1,5 +1,5 @@
 ### Cai dat cac phu thuoc
-$ pip install pandas numpy seaborn matplotlib click 
+$ pip install requests pandas numpy seaborn matplotlib click 
 
 ### Su dung
 ```python
