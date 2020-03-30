@@ -1,7 +1,7 @@
 ### Cài đặt các phụ thuộc 
 $ pip install requests pandas==1.0.1 numpy seaborn matplotlib click
 
-+ lưu ý gói pandas=1.0.1 là bắt buộc do gói pandas mặc định 1.0.3 mình test bị lỗi import
++ lưu ý gói pandas=1.0.1 là bắt buộc do gói pandas mặc định 1.0.3 mình test bị lỗi import trên Windows
 
 ### Sử dụng
 ```python
