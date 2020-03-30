@@ -1,7 +1,9 @@
-### Cai dat cac phu thuoc
-$ pip install requests pandas numpy seaborn matplotlib click 
+### Cài đặt các phụ thuộc 
+$ pip install requests pandas==1.0.1 numpy seaborn matplotlib click
 
-### Su dung
++ lưu ý gói pandas=1.0.1 là bắt buộc do gói pandas mặc định 1.0.3 mình test bị lỗi import
+
+### Sử dụng
 ```python
 # -*- coding:utf-8 -*-
 from pprint import pprint
