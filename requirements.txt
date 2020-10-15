@@ -37,7 +37,7 @@ oauth==1.0.1
 olefile==0.45.1
 pandas==1.0.3
 pexpect==4.2.1
-Pillow==5.1.0
+Pillow==6.2.0
 protobuf==3.0.0
 pycairo==1.16.2
 pycodestyle==2.5.0
