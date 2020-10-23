@@ -208,7 +208,7 @@ def main(symbol, itype, save_data=True, save_fig=True):
         plt.title("Xác suất thứ X tạo High tuần sau khi thứ Y tạo Low tuần")
         create_directory("./figure")
         if save_fig==True:
-            plt.savefig(f"./figure/{symbol.upper()}.png")
+            plt.savefig(f"./figure/{symbol.upper()}-up.png")
         plt.show()
 
     # down
@@ -220,7 +220,7 @@ def main(symbol, itype, save_data=True, save_fig=True):
         plt.title("Xác suất thứ X tạo Low tuần sau khi thứ Y tạo High tuần")
         create_directory("./figure")
         if save_fig==True:
-            plt.savefig(f"./figure/{symbol.upper()}.png")
+            plt.savefig(f"./figure/{symbol.upper()}-down.png")
         plt.show()
 
 if __name__ == "__main__":
